@@ -55,7 +55,7 @@ function getStateKey(msg) {
 }
 
 // Initialize bot
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '7239638999:AAErnD18JZbw_jnEgf964Mp9y1gz25IkVH0';
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '7239638999:AAH2hu1KFc1xdnU6yISqcpFjhNEhcm66LWs';
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: { interval: 1000 } });
 
 // Store user state

@@ -77,26 +77,18 @@ bot.on('message', async (msg) => {
   const text = msg.text;
   const stateKey = getStateKey(msg);
 
-  if (!text) {
-    sendMessageWithQueue(chatId, 'Please send a text message.', {
-      reply_to_message_id: msg.message_id,
-    });
+  // Ignore all commands except /start (handled by bot.onText(/\/start/))
+  if (text && text.startsWith('/')) {
     return;
   }
 
-  if (text.startsWith('/')) {
-    return;
-  }
-
+  // Ignore non-text messages or messages when no state exists
   const state = userState[stateKey];
-
-  if (!state) {
-    sendMessageWithQueue(chatId, `Please use /start to begin. Provide a merchant UUID.`, {
-      reply_to_message_id: msg.message_id,
-    });
+  if (!text || !state) {
     return;
   }
 
+  // Handle messages only when in awaiting_merchant state
   if (state.step === 'awaiting_merchant') {
     state.retryCount = (state.retryCount || 0) + 1;
 
@@ -122,7 +114,7 @@ bot.on('message', async (msg) => {
 *💰 Available Balance*: ${formatNumber(data.availableBalance)}  
 *📈 Success Rate*: ${formatNumber(data.transactionSuccessRate)}%  
 *🏦 Disbursement Balance*: ${formatNumber(data.disbursementBalance)}  
-━━━━━━━━━━━━━━━━━━━━━  
+━━━━━━━━━━━━━━━━━━━━━━  
 _Powered by SahulatPay_
         `;
         sendMessageWithQueue(chatId, message, {
